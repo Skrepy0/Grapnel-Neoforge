@@ -108,7 +108,7 @@ The mod includes one configurable setting accessible via the `/grapnel_settings`
 ### Mod Information
 - **Mod ID**: `grapnel`
 - **Source Code**: Available on GitHub (if applicable)
-- **License**: MIT
+- **License**: Apache License 2.0
 
 ### Dependencies
 - **Required**: NeoForge 21.1.216
