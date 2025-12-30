@@ -1,35 +1,22 @@
 package com.grapnel;
 
-import org.slf4j.Logger;
-
+import com.grapnel.command.FailingBuffer;
+import com.grapnel.event.FishingRodEvent;
+import com.grapnel.item.ModItemTags;
 import com.mojang.logging.LogUtils;
-
 import net.minecraft.core.registries.BuiltInRegistries;
-import net.minecraft.core.registries.Registries;
-import net.minecraft.network.chat.Component;
-import net.minecraft.world.food.FoodProperties;
-import net.minecraft.world.item.BlockItem;
-import net.minecraft.world.item.CreativeModeTab;
-import net.minecraft.world.item.CreativeModeTabs;
-import net.minecraft.world.item.Item;
-import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
-import net.minecraft.world.level.block.state.BlockBehaviour;
-import net.minecraft.world.level.material.MapColor;
-import net.neoforged.api.distmarker.Dist;
 import net.neoforged.bus.api.IEventBus;
 import net.neoforged.bus.api.SubscribeEvent;
+import net.neoforged.fml.ModContainer;
 import net.neoforged.fml.common.Mod;
 import net.neoforged.fml.config.ModConfig;
-import net.neoforged.fml.ModContainer;
+import net.neoforged.fml.event.lifecycle.FMLClientSetupEvent;
 import net.neoforged.fml.event.lifecycle.FMLCommonSetupEvent;
 import net.neoforged.neoforge.common.NeoForge;
 import net.neoforged.neoforge.event.BuildCreativeModeTabContentsEvent;
 import net.neoforged.neoforge.event.server.ServerStartingEvent;
-import net.neoforged.neoforge.registries.DeferredBlock;
-import net.neoforged.neoforge.registries.DeferredHolder;
-import net.neoforged.neoforge.registries.DeferredItem;
-import net.neoforged.neoforge.registries.DeferredRegister;
+import org.slf4j.Logger;
 
 // The value here should match an entry in the META-INF/neoforge.mods.toml file
 @Mod(Grapnel.MOD_ID)
@@ -38,16 +25,20 @@ public class Grapnel {
     public static final String MOD_ID = "grapnel";
     // Directly reference a slf4j logger
     public static final Logger LOGGER = LogUtils.getLogger();
+
     public Grapnel(IEventBus modEventBus, ModContainer modContainer) {
         // Register the commonSetup method for modloading
         modEventBus.addListener(this::commonSetup);
 
-
+        modEventBus.addListener(this::onClientSetup);
         // Register ourselves for server and other game events we are interested in.
         // Note that this is necessary if and only if we want *this* class (Grapnel) to respond directly to events.
         // Do not add this line if there are no @SubscribeEvent-annotated functions in this class, like onServerStarting() below.
         NeoForge.EVENT_BUS.register(this);
-
+        NeoForge.EVENT_BUS.addListener(FailingBuffer::register);
+        NeoForge.EVENT_BUS.addListener(FishingRodEvent::onRightClickItem);
+        NeoForge.EVENT_BUS.addListener(FishingRodEvent::onPlayerDisconnect);
+        NeoForge.EVENT_BUS.addListener(FishingRodEvent::onServerTick);
         // Register the item to a creative tab
         modEventBus.addListener(this::addCreative);
 
@@ -78,5 +69,11 @@ public class Grapnel {
     public void onServerStarting(ServerStartingEvent event) {
         // Do something when the server starts
         LOGGER.info("HELLO from server starting");
+    }
+
+    private void onClientSetup(FMLClientSetupEvent event) {
+        event.enqueueWork(() -> {
+            ModItemTags.registerModItemTags();
+        });
     }
 }
