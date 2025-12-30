@@ -1,0 +1,8 @@
+// 1.21.1	2025-12-30T19:55:14.7756207	Tags for minecraft:enchantment mod id grapnel
+80b92d13cc1ebb613af98ce985829305cadb2468 data/minecraft/tags/enchantment/on_mob_spawn_equipment.json
+80b92d13cc1ebb613af98ce985829305cadb2468 data/minecraft/tags/enchantment/on_random_loot.json
+80b92d13cc1ebb613af98ce985829305cadb2468 data/minecraft/tags/enchantment/on_traded_equipment.json
+80b92d13cc1ebb613af98ce985829305cadb2468 data/minecraft/tags/enchantment/tooltip_order.json
+80b92d13cc1ebb613af98ce985829305cadb2468 data/minecraft/tags/enchantment/tradeable.json
+80b92d13cc1ebb613af98ce985829305cadb2468 data/minecraft/tags/enchantment/trades/plains_common.json
+80b92d13cc1ebb613af98ce985829305cadb2468 data/minecraft/tags/enchantment/treasure.json
