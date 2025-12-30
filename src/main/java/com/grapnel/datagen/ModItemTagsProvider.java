@@ -1,9 +1,11 @@
 package com.grapnel.datagen;
 
 import com.grapnel.Grapnel;
+import com.grapnel.item.ModItemTags;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.data.PackOutput;
 import net.minecraft.data.tags.ItemTagsProvider;
+import net.minecraft.world.item.Items;
 import net.minecraft.world.level.block.Block;
 import net.neoforged.neoforge.common.data.ExistingFileHelper;
 import org.jetbrains.annotations.Nullable;
@@ -18,6 +20,7 @@ public class ModItemTagsProvider extends ItemTagsProvider {
 
     @Override
     protected void addTags(HolderLookup.Provider provider) {
-
+        tag(ModItemTags.GRAPNEL_AVAILABLE)
+                .add(Items.FISHING_ROD.asItem());
     }
 }

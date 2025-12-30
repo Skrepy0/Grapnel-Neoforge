@@ -24,8 +24,9 @@ public class GrapnelDataGen {
         BlockTagsProvider blockTagsProvider = new ModBlockTagsProvider(packOutput, lookUpProvider, existingFileHelper);
         generator.addProvider(event.includeClient(), new ModENUSLanProvider(packOutput));
         generator.addProvider(event.includeClient(), new ModZHCNLanProvider(packOutput));
-        generator.addProvider(event.includeClient(), new ModEnchantmentTagsProvider(packOutput,lookUpProvider,existingFileHelper));
-        generator.addProvider(event.includeClient(), new ModItemTagsProvider(packOutput,lookUpProvider,blockTagsProvider.contentsGetter(),existingFileHelper));
+        generator.addProvider(event.includeClient(), blockTagsProvider);
+        generator.addProvider(event.includeClient(), new ModEnchantmentTagsProvider(packOutput, lookUpProvider, existingFileHelper));
+        generator.addProvider(event.includeClient(), new ModItemTagsProvider(packOutput, lookUpProvider, blockTagsProvider.contentsGetter(), existingFileHelper));
         generator.addProvider(event.includeClient(), new ModEnchantmentsProvider(packOutput, lookUpProvider));
     }
 }
