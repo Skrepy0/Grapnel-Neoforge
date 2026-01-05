@@ -1,5 +1,6 @@
 package com.grapnel.event;
 
+import com.grapnel.Config;
 import com.grapnel.Grapnel;
 import com.grapnel.command.FailingBuffer;
 import com.grapnel.enchantments.ModEnchantHelper;
@@ -131,7 +132,7 @@ public class FishingRodEvent {
 
     // 检查玩家是否落地
     private static void checkPlayerLanding(Player player) {
-        if (!FailingBuffer.failingBuffer) return;
+        if (!Config.getFailingBuffer()) return;
         if (player.level().isClientSide()) return;
 
         UUID playerId = player.getUUID();

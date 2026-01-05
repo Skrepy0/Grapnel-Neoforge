@@ -1,5 +1,6 @@
 {
   "command.grapnel.grapnel_settings.enableFailingBuffer.disable": "§c已禁用§6[FailingBuffer]§r",
   "command.grapnel.grapnel_settings.enableFailingBuffer.enable": "§a已启用§6[FailingBuffer]§r",
-  "enchantment.grapnel.grapnel": "抓钩"
+  "enchantment.grapnel.grapnel": "抓钩",
+  "grapnel.configuration.failingBuffer": "§a摔落缓冲§r"
 }

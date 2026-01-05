@@ -1,5 +1,6 @@
 {
   "command.grapnel.grapnel_settings.enableFailingBuffer.disable": "§6[FailingBuffer] §cDisabled§r",
   "command.grapnel.grapnel_settings.enableFailingBuffer.enable": "§6[FailingBuffer] §aEnabled§r",
-  "enchantment.grapnel.grapnel": "Grapnel"
+  "enchantment.grapnel.grapnel": "Grapnel",
+  "grapnel.configuration.failingBuffer": "§aFailing Buffer§r"
 }

@@ -11,7 +11,7 @@ public class ModENUSLanProvider extends LanguageProvider {
 
     @Override
     protected void addTranslations() {
-
+        add("grapnel.configuration.failingBuffer","§aFailing Buffer§r");
         add("enchantment.grapnel.grapnel", "Grapnel");
         add("command.grapnel.grapnel_settings.enableFailingBuffer.enable", "§6[FailingBuffer] §aEnabled§r");
         add("command.grapnel.grapnel_settings.enableFailingBuffer.disable", "§6[FailingBuffer] §cDisabled§r");

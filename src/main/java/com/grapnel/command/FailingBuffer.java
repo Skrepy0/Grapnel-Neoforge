@@ -6,8 +6,9 @@ import net.minecraft.commands.Commands;
 import net.minecraft.network.chat.Component;
 import net.neoforged.neoforge.event.RegisterCommandsEvent;
 
+import static com.grapnel.Config.setFailingBuffer;
+
 public class FailingBuffer {
-    public static boolean failingBuffer = true;
 
     public static void register(RegisterCommandsEvent event) {
         event.getDispatcher().register(Commands.literal("grapnel_settings")
@@ -16,7 +17,7 @@ public class FailingBuffer {
                         .then(Commands.argument("enabled", BoolArgumentType.bool())
                                 .executes(context -> {
                                     boolean enabled = BoolArgumentType.getBool(context, "enabled");
-                                    failingBuffer = enabled;
+                                    setFailingBuffer(enabled);
                                     Component message = enabled ?
                                             Component.translatable("command.grapnel.grapnel_settings.enableFailingBuffer.enable") :
                                             Component.translatable("command.grapnel.grapnel_settings.enableFailingBuffer.disable");
