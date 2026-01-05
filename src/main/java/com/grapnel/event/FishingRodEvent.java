@@ -2,14 +2,12 @@ package com.grapnel.event;
 
 import com.grapnel.Config;
 import com.grapnel.Grapnel;
-import com.grapnel.command.FailingBuffer;
 import com.grapnel.enchantments.ModEnchantHelper;
 import com.grapnel.enchantments.ModEnchantments;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.entity.projectile.FishingHook;
 import net.minecraft.world.item.FishingRodItem;
-import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.enchantment.Enchantments;
 import net.minecraft.world.level.Level;
@@ -179,13 +177,12 @@ public class FishingRodEvent {
     private static int getItemDamage(int unbreakingLevel) {
         Random random = new Random();
         int rand = random.nextInt(100);
-        if (unbreakingLevel == 0){
+        if (unbreakingLevel == 0) {
             if (rand <= 50) {
                 return 0;
             }
             return 1;
-        }
-        else if (unbreakingLevel == 1) {
+        } else if (unbreakingLevel == 1) {
             if (rand <= 75) {
                 return 0;
             }

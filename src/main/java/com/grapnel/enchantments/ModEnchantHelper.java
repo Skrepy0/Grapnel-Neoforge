@@ -33,6 +33,7 @@ public class ModEnchantHelper {
 
         return 0;
     }
+
     public static Holder<Enchantment> getHolder(ResourceKey<Enchantment> enchantmentKey) {
         Level world = Minecraft.getInstance().level;
         return world.registryAccess()
@@ -40,6 +41,7 @@ public class ModEnchantHelper {
                 .getHolder(enchantmentKey)
                 .orElse(null);
     }
+
     public static String toRoman(int number) {
         if (number < 11 || number > 255) {
             throw new IllegalArgumentException("输入必须在11到255之间");
@@ -63,6 +65,7 @@ public class ModEnchantHelper {
                 tens[tenPart] +
                 units[unitPart];
     }
+
     public static String getDescriptionId(Enchantment enchantment, RegistryAccess registryAccess) {
         Registry<Enchantment> registry = registryAccess.registryOrThrow(Registries.ENCHANTMENT);
         ResourceLocation id = registry.getKey(enchantment);

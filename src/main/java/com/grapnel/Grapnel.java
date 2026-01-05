@@ -4,8 +4,6 @@ import com.grapnel.command.FailingBuffer;
 import com.grapnel.event.FishingRodEvent;
 import com.grapnel.item.ModItemTags;
 import com.mojang.logging.LogUtils;
-import net.minecraft.core.registries.BuiltInRegistries;
-import net.minecraft.world.level.block.Blocks;
 import net.neoforged.bus.api.IEventBus;
 import net.neoforged.bus.api.SubscribeEvent;
 import net.neoforged.fml.ModContainer;
@@ -27,9 +25,10 @@ public class Grapnel {
     public static final Logger LOGGER = LogUtils.getLogger();
 
     public Grapnel(IEventBus modEventBus, ModContainer modContainer) {
+        // Register our mod's ModConfigSpec so that FML can create and load the config file for us
+        modContainer.registerConfig(ModConfig.Type.COMMON, Config.SPEC);
         // Register the commonSetup method for modloading
         modEventBus.addListener(this::commonSetup);
-
         modEventBus.addListener(this::onClientSetup);
         // Register ourselves for server and other game events we are interested in.
         // Note that this is necessary if and only if we want *this* class (Grapnel) to respond directly to events.
@@ -41,9 +40,6 @@ public class Grapnel {
         NeoForge.EVENT_BUS.addListener(FishingRodEvent::onServerTick);
         // Register the item to a creative tab
         modEventBus.addListener(this::addCreative);
-
-        // Register our mod's ModConfigSpec so that FML can create and load the config file for us
-        modContainer.registerConfig(ModConfig.Type.COMMON, Config.SPEC);
     }
 
     private void commonSetup(FMLCommonSetupEvent event) {

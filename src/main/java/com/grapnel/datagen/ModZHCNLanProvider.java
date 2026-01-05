@@ -12,7 +12,7 @@ public class ModZHCNLanProvider extends LanguageProvider {
     @Override
     protected void addTranslations() {
         add("enchantment.grapnel.grapnel", "抓钩");
-        add("grapnel.configuration.failingBuffer","§a摔落缓冲§r");
+        add("grapnel.configuration.failingBuffer", "§a摔落缓冲§r");
 
         add("command.grapnel.grapnel_settings.enableFailingBuffer.enable", "§a已启用§6[FailingBuffer]§r");
         add("command.grapnel.grapnel_settings.enableFailingBuffer.disable", "§c已禁用§6[FailingBuffer]§r");
