@@ -1,6 +1,11 @@
 {
-  "command.grapnel.grapnel_settings.enableFailingBuffer.disable": "§c已禁用§6[FailingBuffer]§r",
-  "command.grapnel.grapnel_settings.enableFailingBuffer.enable": "§a已启用§6[FailingBuffer]§r",
+  "command.grapnel.grapnel_settings.enableFallingBuffer.disable": "§c已禁用§6[FallingBuffer]§r",
+  "command.grapnel.grapnel_settings.enableFallingBuffer.enable": "§a已启用§6[FallingBuffer]§r",
+  "command.grapnel.show_value": "配置[%s]目前为：%s",
   "enchantment.grapnel.grapnel": "抓钩",
-  "grapnel.configuration.failingBuffer": "§a摔落缓冲§r"
+  "enchantment.grapnel.grapnel.desc": "使用附魔有§6[抓钩]§r的钓竿后，收杆时将玩家拉向鱼漂",
+  "enchantment.grapnel.toughness": "坚韧",
+  "enchantment.grapnel.toughness.desc": "增加钓竿的鱼线强度",
+  "grapnel.configuration.fallingBuffer": "§a摔落缓冲§r",
+  "grapnel.configuration.fallingBuffer.tooltip": "玩家使用附魔有§6[抓钩]§r的钓竿后，下一次落地不受伤害"
 }

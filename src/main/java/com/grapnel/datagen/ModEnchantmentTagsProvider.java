@@ -21,16 +21,23 @@ public class ModEnchantmentTagsProvider extends EnchantmentTagsProvider {
         tag(EnchantmentTags.ON_MOB_SPAWN_EQUIPMENT)
                 .addOptional(ResourceLocation.fromNamespaceAndPath(Grapnel.MOD_ID, "grapnel"));
         tag(EnchantmentTags.ON_RANDOM_LOOT)
-                .addOptional(ResourceLocation.fromNamespaceAndPath(Grapnel.MOD_ID, "grapnel"));
+                .addOptional(ResourceLocation.fromNamespaceAndPath(Grapnel.MOD_ID, "grapnel"))
+                .addOptional(ResourceLocation.fromNamespaceAndPath(Grapnel.MOD_ID, "toughness"));
         tag(EnchantmentTags.ON_TRADED_EQUIPMENT)
-                .addOptional(ResourceLocation.fromNamespaceAndPath(Grapnel.MOD_ID, "grapnel"));
+                .addOptional(ResourceLocation.fromNamespaceAndPath(Grapnel.MOD_ID, "grapnel"))
+                .addOptional(ResourceLocation.fromNamespaceAndPath(Grapnel.MOD_ID, "toughness"));
         tag(EnchantmentTags.TOOLTIP_ORDER)
                 .addOptional(ResourceLocation.fromNamespaceAndPath(Grapnel.MOD_ID, "grapnel"));
         tag(EnchantmentTags.TRADEABLE)
-                .addOptional(ResourceLocation.fromNamespaceAndPath(Grapnel.MOD_ID, "grapnel"));
+                .addOptional(ResourceLocation.fromNamespaceAndPath(Grapnel.MOD_ID, "grapnel"))
+                .addOptional(ResourceLocation.fromNamespaceAndPath(Grapnel.MOD_ID, "toughness"));
         tag(EnchantmentTags.TREASURE)
-                .addOptional(ResourceLocation.fromNamespaceAndPath(Grapnel.MOD_ID, "grapnel"));
+                .addOptional(ResourceLocation.fromNamespaceAndPath(Grapnel.MOD_ID, "grapnel"))
+                .addOptional(ResourceLocation.fromNamespaceAndPath(Grapnel.MOD_ID, "toughness"));
+
         tag(EnchantmentTags.TRADES_PLAINS_COMMON)
-                .addOptional(ResourceLocation.fromNamespaceAndPath(Grapnel.MOD_ID, "grapnel"));
+                .addOptional(ResourceLocation.fromNamespaceAndPath(Grapnel.MOD_ID, "grapnel"))
+                .addOptional(ResourceLocation.fromNamespaceAndPath(Grapnel.MOD_ID, "toughness"));
+
     }
 }

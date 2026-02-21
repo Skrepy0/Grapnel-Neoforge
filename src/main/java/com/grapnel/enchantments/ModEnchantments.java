@@ -14,7 +14,7 @@ import net.minecraft.world.item.enchantment.Enchantment;
 
 public class ModEnchantments {
     public static final ResourceKey<Enchantment> GRAPNEL = of("grapnel");
-
+    public static final ResourceKey<Enchantment> TOUGHNESS = of("toughness");
     public static void bootstrap(BootstrapContext<Enchantment> registry) {
         HolderGetter<Enchantment> registryEntryLookup2 = registry.lookup(Registries.ENCHANTMENT);
         HolderGetter<Item> registryEntryLookup3 = registry.lookup(Registries.ITEM);
@@ -23,7 +23,14 @@ public class ModEnchantments {
                 2, 1,
                 Enchantment.dynamicCost(13, 5),
                 Enchantment.dynamicCost(27, 10), 5,
-                EquipmentSlotGroup.MAINHAND))
+                EquipmentSlotGroup.HAND))
+        );
+        register(registry, TOUGHNESS, Enchantment.enchantment(Enchantment.definition(
+                registryEntryLookup3.getOrThrow(ModItemTags.TOUGHNESS_AVAILABLE),
+                3, 2,
+                Enchantment.dynamicCost(11, 5),
+                Enchantment.dynamicCost(25, 8), 4,
+                EquipmentSlotGroup.HAND))
         );
     }
 

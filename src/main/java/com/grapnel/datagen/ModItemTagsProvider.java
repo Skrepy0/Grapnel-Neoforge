@@ -22,5 +22,7 @@ public class ModItemTagsProvider extends ItemTagsProvider {
     protected void addTags(HolderLookup.Provider provider) {
         tag(ModItemTags.GRAPNEL_AVAILABLE)
                 .add(Items.FISHING_ROD.asItem());
+        tag(ModItemTags.TOUGHNESS_AVAILABLE)
+                .add(Items.FISHING_ROD.asItem());
     }
 }

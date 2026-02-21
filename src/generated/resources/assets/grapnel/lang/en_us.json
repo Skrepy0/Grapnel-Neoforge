@@ -1,6 +1,11 @@
 {
-  "command.grapnel.grapnel_settings.enableFailingBuffer.disable": "§6[FailingBuffer] §cDisabled§r",
-  "command.grapnel.grapnel_settings.enableFailingBuffer.enable": "§6[FailingBuffer] §aEnabled§r",
+  "command.grapnel.grapnel_settings.enableFallingBuffer.disable": "§6[Fall Buffer] §cDisabled§r",
+  "command.grapnel.grapnel_settings.enableFallingBuffer.enable": "§6[Fall Buffer] §aEnabled§r",
+  "command.grapnel.show_value": "Config [%s] is currently set to:%s",
   "enchantment.grapnel.grapnel": "Grapnel",
-  "grapnel.configuration.failingBuffer": "§aFailing Buffer§r"
+  "enchantment.grapnel.grapnel.desc": "After using a fishing rod enchanted with §6[Grapnel]§r, reeling in pulls the player towards the bobber.",
+  "enchantment.grapnel.toughness": "Toughness",
+  "enchantment.grapnel.toughness.desc": "Increases fishing line strength, allowing you to cast farther and reducing the chance of the line breaking.",
+  "grapnel.configuration.fallingBuffer": "§aFall Buffer§r",
+  "grapnel.configuration.fallingBuffer.tooltip": "When enabled, the player takes no fall damage on the first landing after using a fishing rod enchanted with §6[Grapnel]§r."
 }

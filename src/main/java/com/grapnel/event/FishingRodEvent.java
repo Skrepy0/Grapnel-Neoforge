@@ -19,8 +19,8 @@ import net.neoforged.neoforge.event.tick.ServerTickEvent;
 
 import java.util.HashMap;
 import java.util.Map;
-import java.util.Random;
 import java.util.UUID;
+import java.util.concurrent.ThreadLocalRandom;
 
 public class FishingRodEvent {
     // 存储玩家是否有摔落保护的映射
@@ -71,11 +71,7 @@ public class FishingRodEvent {
         Vec3 bobberPos = fishingHook.position();
 
         // 计算方向向量（从玩家指向鱼漂）
-        Vec3 direction = new Vec3(
-                bobberPos.x - playerPos.x,
-                bobberPos.y - playerPos.y,
-                bobberPos.z - playerPos.z
-        );
+        Vec3 direction = new Vec3(bobberPos.x - playerPos.x, bobberPos.y - playerPos.y, bobberPos.z - playerPos.z);
 
         // 计算距离并限制最小距离
         double distance = Math.max(direction.length(), 1.0);
@@ -108,11 +104,7 @@ public class FishingRodEvent {
             double verticalMultiplier = 1.0;
 
             // 给玩家添加速度
-            player.push(
-                    normalizedDirection.x * strength,
-                    normalizedDirection.y * strength * verticalMultiplier,
-                    normalizedDirection.z * strength
-            );
+            player.push(normalizedDirection.x * strength, normalizedDirection.y * strength * verticalMultiplier, normalizedDirection.z * strength);
             player.hurtMarked = true;
 
             Grapnel.LOGGER.info("Applied momentum to player: " + strength);
@@ -123,7 +115,7 @@ public class FishingRodEvent {
             protectionStartPositions.put(player.getUUID(), player.position());
             // 耐久损耗
             if (!player.isCreative()) {
-                stack.setDamageValue(stack.getDamageValue() + getItemDamage(unbreakingLevel));
+                stack.hurtAndBreak(getItemDamage(unbreakingLevel), player, player.getEquipmentSlotForItem(stack));
             }
         }
     }
@@ -148,11 +140,7 @@ public class FishingRodEvent {
 
         // 计算玩家移动的距离
         Vec3 currentPos = player.position();
-        double distanceMoved = Math.sqrt(
-                Math.pow(currentPos.x - startPos.x, 2) +
-                        Math.pow(currentPos.y - startPos.y, 2) +
-                        Math.pow(currentPos.z - startPos.z, 2)
-        );
+        double distanceMoved = Math.sqrt(Math.pow(currentPos.x - startPos.x, 2) + Math.pow(currentPos.y - startPos.y, 2) + Math.pow(currentPos.z - startPos.z, 2));
 
         // 只有当玩家移动了一定距离后，才开始检测落地
         // 这可以防止在收杆的瞬间就检测到"落地"
@@ -175,29 +163,13 @@ public class FishingRodEvent {
     }
 
     private static int getItemDamage(int unbreakingLevel) {
-        Random random = new Random();
-        int rand = random.nextInt(100);
-        if (unbreakingLevel == 0) {
-            if (rand <= 50) {
-                return 0;
-            }
-            return 1;
-        } else if (unbreakingLevel == 1) {
-            if (rand <= 75) {
-                return 0;
-            }
-            return 1;
-        } else if (unbreakingLevel == 2) {
-            if (rand <= 80) {
-                return 0;
-            }
-            return 1;
-        } else if (unbreakingLevel > 2) {
-            if (rand <= 90) {
-                return 0;
-            }
+        if (unbreakingLevel <= 0) {
             return 1;
         }
-        return 1;
+        return getDamageByProbability((-0.589) / (1 - 1.588 * Math.pow(Math.E, 0.1542 * unbreakingLevel)));
+    }
+
+    private static int getDamageByProbability(double probability) {
+        return ThreadLocalRandom.current().nextDouble() < probability ? 1 : 0;
     }
 }

@@ -9,8 +9,7 @@ import net.neoforged.neoforge.common.ModConfigSpec;
 public class Config {
     private static final ModConfigSpec.Builder BUILDER = new ModConfigSpec.Builder();
     private static final ModConfigSpec.BooleanValue FAILING_BUFFER = BUILDER
-            .comment("玩家使用附魔有§6[抓钩]§r的钓竿后，下一次落地不受伤害")
-            .define("failingBuffer", false);
+            .define("fallingBuffer", false);
 
     public static boolean getFailingBuffer() {
         return FAILING_BUFFER.get();

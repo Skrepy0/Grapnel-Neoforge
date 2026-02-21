@@ -3,6 +3,10 @@
     {
       "id": "grapnel:grapnel",
       "required": false
+    },
+    {
+      "id": "grapnel:toughness",
+      "required": false
     }
   ]
 }

@@ -1,6 +1,7 @@
 package com.grapnel;
 
 import com.grapnel.command.FailingBuffer;
+import com.grapnel.data.FishingHookData;
 import com.grapnel.event.FishingRodEvent;
 import com.grapnel.item.ModItemTags;
 import com.mojang.logging.LogUtils;
@@ -30,6 +31,7 @@ public class Grapnel {
         // Register the commonSetup method for modloading
         modEventBus.addListener(this::commonSetup);
         modEventBus.addListener(this::onClientSetup);
+        FishingHookData.ATTACHMENT_TYPES.register(modEventBus);
         // Register ourselves for server and other game events we are interested in.
         // Note that this is necessary if and only if we want *this* class (Grapnel) to respond directly to events.
         // Do not add this line if there are no @SubscribeEvent-annotated functions in this class, like onServerStarting() below.
