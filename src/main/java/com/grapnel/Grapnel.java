@@ -1,10 +1,14 @@
 package com.grapnel;
 
-import com.grapnel.command.FailingBuffer;
+import com.grapnel.command.ConfigCommand;
 import com.grapnel.data.FishingHookData;
 import com.grapnel.event.FishingRodEvent;
 import com.grapnel.item.ModItemTags;
+import com.grapnel.mixin.ItemsMixin;
 import com.mojang.logging.LogUtils;
+import net.minecraft.core.registries.BuiltInRegistries;
+import net.minecraft.resources.ResourceLocation;
+import net.minecraft.world.item.FishingRodItem;
 import net.neoforged.bus.api.IEventBus;
 import net.neoforged.bus.api.SubscribeEvent;
 import net.neoforged.fml.ModContainer;
@@ -27,8 +31,7 @@ public class Grapnel {
 
     public Grapnel(IEventBus modEventBus, ModContainer modContainer) {
         // Register our mod's ModConfigSpec so that FML can create and load the config file for us
-        modContainer.registerConfig(ModConfig.Type.COMMON, Config.SPEC);
-        // Register the commonSetup method for modloading
+        modContainer.registerConfig(ModConfig.Type.COMMON, com.grapnel.Config.SPEC);
         modEventBus.addListener(this::commonSetup);
         modEventBus.addListener(this::onClientSetup);
         FishingHookData.ATTACHMENT_TYPES.register(modEventBus);
@@ -36,7 +39,7 @@ public class Grapnel {
         // Note that this is necessary if and only if we want *this* class (Grapnel) to respond directly to events.
         // Do not add this line if there are no @SubscribeEvent-annotated functions in this class, like onServerStarting() below.
         NeoForge.EVENT_BUS.register(this);
-        NeoForge.EVENT_BUS.addListener(FailingBuffer::register);
+        NeoForge.EVENT_BUS.addListener(ConfigCommand::register);
         NeoForge.EVENT_BUS.addListener(FishingRodEvent::onRightClickItem);
         NeoForge.EVENT_BUS.addListener(FishingRodEvent::onPlayerDisconnect);
         NeoForge.EVENT_BUS.addListener(FishingRodEvent::onServerTick);
@@ -45,7 +48,6 @@ public class Grapnel {
     }
 
     private void commonSetup(FMLCommonSetupEvent event) {
-        // Some common setup code
     }
 
     // Add the example block item to the building blocks tab

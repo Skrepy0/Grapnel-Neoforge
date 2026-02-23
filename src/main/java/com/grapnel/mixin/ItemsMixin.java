@@ -1,5 +1,6 @@
 package com.grapnel.mixin;
 
+import com.grapnel.Config;
 import net.minecraft.core.component.DataComponentMap;
 import net.minecraft.core.component.DataComponents;
 import net.minecraft.core.component.TypedDataComponent;

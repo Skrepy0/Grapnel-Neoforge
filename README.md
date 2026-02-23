@@ -53,7 +53,7 @@ Customize your grapnel experience with configurable settings:
 /grapnel_settings enableFallingBuffer <true/false>
 ```
 
-- **Default**: `true` (enabled)
+- **Default**: `false` (disabled)
 - **When enabled**: Players won't take fall damage on their first landing after using the grapnel
 - **When disabled**: No fall damage protection - players will take normal fall damage
 

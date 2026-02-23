@@ -1,11 +1,15 @@
 {
-  "command.grapnel.grapnel_settings.enableFallingBuffer.disable": "§c已禁用§6[FallingBuffer]§r",
-  "command.grapnel.grapnel_settings.enableFallingBuffer.enable": "§a已启用§6[FallingBuffer]§r",
+  "command.grapnel.config.changed": "已被更改为",
+  "command.grapnel.config.unchanged": "的状态§c未发生有效更改§r",
   "command.grapnel.show_value": "配置[%s]目前为：%s",
   "enchantment.grapnel.grapnel": "抓钩",
   "enchantment.grapnel.grapnel.desc": "使用附魔有§6[抓钩]§r的钓竿后，收杆时将玩家拉向鱼漂",
   "enchantment.grapnel.toughness": "坚韧",
   "enchantment.grapnel.toughness.desc": "增加钓竿的鱼线强度",
-  "grapnel.configuration.fallingBuffer": "§a摔落缓冲§r",
-  "grapnel.configuration.fallingBuffer.tooltip": "玩家使用附魔有§6[抓钩]§r的钓竿后，下一次落地不受伤害"
+  "grapnel.configuration.fallingBuffer": "摔落缓冲",
+  "grapnel.configuration.fallingBuffer.tooltip": "启用后，玩家使用附魔有§6[抓钩]§r的钓竿后，下一次落地不受伤害",
+  "grapnel.configuration.grabWall": "钓竿抓墙",
+  "grapnel.configuration.grabWall.tooltip": "启用后，鱼竿可以勾住墙面",
+  "grapnel.configuration.grapnelCheck": "抓钩检测",
+  "grapnel.configuration.grapnelCheck.tooltip": "启用后，钓竿勾住方块或实体时，收杆才触发§6[抓钩]§r附魔效果"
 }

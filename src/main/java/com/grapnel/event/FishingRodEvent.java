@@ -2,6 +2,7 @@ package com.grapnel.event;
 
 import com.grapnel.Config;
 import com.grapnel.Grapnel;
+import com.grapnel.data.FishingHookData;
 import com.grapnel.enchantments.ModEnchantHelper;
 import com.grapnel.enchantments.ModEnchantments;
 import net.minecraft.world.InteractionHand;
@@ -18,15 +19,24 @@ import net.neoforged.neoforge.event.entity.player.PlayerInteractEvent;
 import net.neoforged.neoforge.event.tick.ServerTickEvent;
 
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.Map;
 import java.util.UUID;
 import java.util.concurrent.ThreadLocalRandom;
 
 public class FishingRodEvent {
-    // 存储玩家是否有摔落保护的映射
-    private static final Map<UUID, Boolean> fallProtectionMap = new HashMap<>();
-    // 存储玩家获得保护时的位置，用于检测是否已经移动
-    private static final Map<UUID, Vec3> protectionStartPositions = new HashMap<>();
+    private static class ProtectionData {
+        boolean active;
+        Vec3 startPos;
+
+        ProtectionData(boolean active, Vec3 startPos) {
+            this.active = active;
+            this.startPos = startPos;
+        }
+    }
+
+    private static final Map<UUID, ProtectionData> protectionMap = new HashMap<>();
+    private static final double MIN_MOVE_DISTANCE_SQ = 0.01;
 
     @SubscribeEvent
     public static void onRightClickItem(PlayerInteractEvent.RightClickItem event) {
@@ -35,10 +45,14 @@ public class FishingRodEvent {
         ItemStack stack = event.getItemStack();
         InteractionHand hand = event.getHand();
 
-        // 检查是否是钓鱼竿
-        if (stack.getItem() instanceof FishingRodItem) {
-            // 如果玩家已经有鱼钩，说明是收杆操作
-            if (player.fishing != null) {
+        if (stack.getItem() instanceof FishingRodItem && player.fishing != null) {
+            // 检查是否满足触发条件
+            boolean shouldTrigger = !Config.getGrapnelCheck() ||
+                    player.fishing.getHookedIn() != null ||
+                    player.fishing.onGround() ||
+                    player.fishing.getData(FishingHookData.IS_HOOKED.get()).isHooked();
+
+            if (shouldTrigger) {
                 onFishingRodRetrieve(player, level, hand);
             }
         }
@@ -46,130 +60,94 @@ public class FishingRodEvent {
 
     @SubscribeEvent
     public static void onServerTick(ServerTickEvent.Pre event) {
-        event.getServer().getPlayerList().getPlayers().forEach(FishingRodEvent::checkPlayerLanding);
+        // 只遍历有保护的玩家
+        Iterator<Map.Entry<UUID, ProtectionData>> iterator = protectionMap.entrySet().iterator();
+        while (iterator.hasNext()) {
+            Map.Entry<UUID, ProtectionData> entry = iterator.next();
+            Player player = event.getServer().getPlayerList().getPlayer(entry.getKey());
+            if (player == null) {
+                iterator.remove();
+                continue;
+            }
+            checkPlayerLanding(player, entry.getValue(), iterator);
+        }
     }
 
     @SubscribeEvent
     public static void onPlayerDisconnect(PlayerEvent.PlayerLoggedOutEvent event) {
-        Player player = event.getEntity();
-        UUID playerId = player.getUUID();
-        fallProtectionMap.remove(playerId);
-        protectionStartPositions.remove(playerId);
+        protectionMap.remove(event.getEntity().getUUID());
     }
 
     private static void onFishingRodRetrieve(Player player, Level level, InteractionHand hand) {
-        // 只在服务端执行
         if (level.isClientSide()) return;
 
-        // 获取鱼钩实体
-        if (player.fishing == null) return;
-
         FishingHook fishingHook = player.fishing;
+        if (fishingHook == null) return;
 
-        // 获取玩家和鱼漂位置
         Vec3 playerPos = player.position();
         Vec3 bobberPos = fishingHook.position();
 
-        // 计算方向向量（从玩家指向鱼漂）
-        Vec3 direction = new Vec3(bobberPos.x - playerPos.x, bobberPos.y - playerPos.y, bobberPos.z - playerPos.z);
+        // 计算方向和距离
+        Vec3 direction = bobberPos.subtract(playerPos);
+        double distance = direction.length();
+        if (distance < 1e-6) return; // 防止除以零
 
-        // 计算距离并限制最小距离
-        double distance = Math.max(direction.length(), 1.0);
+        // 标准化方向
+        Vec3 normalized = direction.scale(1.0 / distance);
 
-        // 标准化方向向量
-        if (distance > 0) {
-            Vec3 normalizedDirection = direction.scale(1 / distance);
+        // 获取附魔等级
+        ItemStack stack = player.getItemInHand(hand);
+        int grapnelLevel = ModEnchantHelper.getEnchantmentLevel(stack, level, ModEnchantments.GRAPNEL);
+        int unbreakingLevel = ModEnchantHelper.getEnchantmentLevel(stack, level, Enchantments.UNBREAKING);
 
-            // 获取鱼竿上的附魔等级
-            ItemStack stack = player.getItemInHand(hand);
+        // 计算拉拽强度
+        double strength = grapnelLevel * 2.5 * (distance / 15.0);
+        double verticalMultiplier = 1.0; // 可配置
 
-            // 获取附魔等级
-            int grapnelLevel = ModEnchantHelper.getEnchantmentLevel(stack, level, ModEnchantments.GRAPNEL);
-            int unbreakingLevel = ModEnchantHelper.getEnchantmentLevel(stack, level, Enchantments.UNBREAKING);
+        // 施加动量
+        player.push(normalized.x * strength, normalized.y * strength * verticalMultiplier, normalized.z * strength);
+        player.hurtMarked = true;
 
-            // 计算动量强度（基础值 + 附魔加成）
-            double user_x = playerPos.x();
-            double user_y = playerPos.y();
-            double user_z = playerPos.z();
+        Grapnel.LOGGER.debug("Applied momentum to player: {}", strength);
 
-            double hook_x = bobberPos.x();
-            double hook_y = bobberPos.y();
-            double hook_z = bobberPos.z();
+        // 设置摔落保护
+        protectionMap.put(player.getUUID(), new ProtectionData(true, player.position()));
 
-            double real_distance = Math.sqrt((user_x - hook_x) * (user_x - hook_x) + (user_y - hook_y) * (user_y - hook_y) + (user_z - hook_z) * (user_z - hook_z));
-            double strength = grapnelLevel * 2.5;
-            strength *= (real_distance / 15.0f);
-
-            // 应用垂直动量 multiplier
-            double verticalMultiplier = 1.0;
-
-            // 给玩家添加速度
-            player.push(normalizedDirection.x * strength, normalizedDirection.y * strength * verticalMultiplier, normalizedDirection.z * strength);
-            player.hurtMarked = true;
-
-            Grapnel.LOGGER.info("Applied momentum to player: " + strength);
-
-            // 设置摔落保护
-            fallProtectionMap.put(player.getUUID(), true);
-            // 记录保护开始时的位置
-            protectionStartPositions.put(player.getUUID(), player.position());
-            // 耐久损耗
-            if (!player.isCreative()) {
-                stack.hurtAndBreak(getItemDamage(unbreakingLevel), player, player.getEquipmentSlotForItem(stack));
-            }
+        // 耐久损耗
+        if (!player.isCreative()) {
+            stack.hurtAndBreak(getItemDamage(unbreakingLevel), player, player.getEquipmentSlotForItem(stack));
         }
     }
 
-    // 检查玩家是否落地
-    private static void checkPlayerLanding(Player player) {
-        if (!Config.getFailingBuffer()) return;
-        if (player.level().isClientSide()) return;
-
-        UUID playerId = player.getUUID();
-
-        // 检查玩家是否有摔落保护
-        boolean hasProtection = fallProtectionMap.getOrDefault(playerId, false);
-        if (!hasProtection) return;
-
-        // 获取保护开始时的位置
-        Vec3 startPos = protectionStartPositions.get(playerId);
-        if (startPos == null) {
-            fallProtectionMap.put(playerId, false);
+    private static void checkPlayerLanding(Player player, ProtectionData data, Iterator<?> iterator) {
+        if (!Config.getFailingBuffer() || player.level().isClientSide()) {
+            iterator.remove();
             return;
         }
 
-        // 计算玩家移动的距离
+        if (!data.active) return;
+
         Vec3 currentPos = player.position();
-        double distanceMoved = Math.sqrt(Math.pow(currentPos.x - startPos.x, 2) + Math.pow(currentPos.y - startPos.y, 2) + Math.pow(currentPos.z - startPos.z, 2));
+        double distanceSq = currentPos.distanceToSqr(data.startPos);
 
-        // 只有当玩家移动了一定距离后，才开始检测落地
-        // 这可以防止在收杆的瞬间就检测到"落地"
-        if (distanceMoved < 0.1) {
+        // 如果还没移动，只重置摔落距离
+        if (distanceSq < MIN_MOVE_DISTANCE_SQ) {
             player.resetFallDistance();
             return;
         }
 
-        // 简单的落地检测：玩家是否站在地面上
         if (player.onGround()) {
-            // 玩家已经落地，移除保护
             player.resetFallDistance();
-            fallProtectionMap.put(playerId, false);
-            protectionStartPositions.remove(playerId);
-            Grapnel.LOGGER.info("Removed fall protection for player: " + player.getName().getString());
+            iterator.remove();
+            Grapnel.LOGGER.debug("Removed fall protection for player: {}", player.getName().getString());
         } else {
-            // 玩家还在空中，保持保护并重置摔落距离
             player.resetFallDistance();
         }
     }
 
     private static int getItemDamage(int unbreakingLevel) {
-        if (unbreakingLevel <= 0) {
-            return 1;
-        }
-        return getDamageByProbability((-0.589) / (1 - 1.588 * Math.pow(Math.E, 0.1542 * unbreakingLevel)));
-    }
-
-    private static int getDamageByProbability(double probability) {
+        if (unbreakingLevel <= 0) return 1;
+        double probability = (-0.589) / (1 - 1.588 * Math.pow(Math.E, 0.1542 * unbreakingLevel));
         return ThreadLocalRandom.current().nextDouble() < probability ? 1 : 0;
     }
 }

@@ -19,10 +19,16 @@ public class ModENUSLanProvider extends LanguageProvider {
 
         // Configuration
         add("grapnel.configuration.fallingBuffer", "§aFall Buffer§r");
+        add("grapnel.configuration.grapnelCheck", "Grapnel Detection");
+        add("grapnel.configuration.grabWall", "Grab Wall");
+        add("grapnel.configuration.grabWall.tooltip", "When enabled, the fishing rod can hook onto walls.");
+        add("grapnel.configuration.grapnelCheck.tooltip", "When enabled, the §6[Grapnel]§r enchantment only triggers when the hook is stuck in a block or entity.");
         add("grapnel.configuration.fallingBuffer.tooltip", "When enabled, the player takes no fall damage on the first landing after using a fishing rod enchanted with §6[Grapnel]§r.");
 
         // Commands
-        add("command.grapnel.show_value","Config [%s] is currently set to:%s");
+        add("command.grapnel.show_value", "Config [%s] is currently set to: %s");
+        add("command.grapnel.config.changed", "has been changed to");
+        add("command.grapnel.config.unchanged", " status §chas not been effectively changed§r");
         add("command.grapnel.grapnel_settings.enableFallingBuffer.enable", "§6[Fall Buffer] §aEnabled§r");
         add("command.grapnel.grapnel_settings.enableFallingBuffer.disable", "§6[Fall Buffer] §cDisabled§r");
     }
