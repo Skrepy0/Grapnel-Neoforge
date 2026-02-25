@@ -18,7 +18,7 @@ public class ModENUSLanProvider extends LanguageProvider {
         add("enchantment.grapnel.toughness.desc", "Increases fishing line strength, allowing you to cast farther and reducing the chance of the line breaking.");
 
         // Configuration
-        add("grapnel.configuration.fallingBuffer", "§aFall Buffer§r");
+        add("grapnel.configuration.fallingBuffer", "Fall Buffer§r");
         add("grapnel.configuration.grapnelCheck", "Grapnel Detection");
         add("grapnel.configuration.grabWall", "Grab Wall");
         add("grapnel.configuration.grabWall.tooltip", "When enabled, the fishing rod can hook onto walls.");

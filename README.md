@@ -1,205 +1,141 @@
-# Grapnel Enchantment Mod for Minecraft 1.21.1
+[![NeoForge](https://img.shields.io/badge/NeoForge-21.1.216+-orange?style=flat-square)](https://neoforged.net/)
+[![Minecraft](https://img.shields.io/badge/Minecraft-1.21.1-brightgreen?style=flat-square)](https://minecraft.net)
 
-## Overview
-
-The Grapnel Mod adds thrilling new enchantments to fishing rods, transforming them into a grappling hook-like tool that allows players to swing through the air like the vertical maneuvering equipment from popular anime. Additionally, it introduces a **Toughness** enchantment that strengthens the fishing line, enabling longer casts and reducing breakage. This mod enhances mobility and adds a fun new way to traverse your Minecraft world.
-
----
-
-## Features
-
-### Enchantment: Grapnel
-
-- **Enchantment ID**: `grapnel:grapnel`
-- **Max Level**: 1 (single-level enchantment)
-- **Rarity**: Treasure
-- **Applicable Items**: Fishing rods
-
-**Effect**: When a fishing rod with the Grapnel enchantment is cast and then retrieved (right-click), the user is pulled towards the fishing bobber. This allows for Spider-Man-like swinging and vertical mobility.
+将钓鱼竿变成一把抓钩工具！本模组新增两种附魔，彻底改变钓鱼竿的玩法——你可以用它来跨越地形、攀爬高处。配合配置选项，让抓钩的使用更加贴合你的游戏风格。
 
 ---
 
-### Enchantment: Toughness
+## 主要特性
 
-- **Enchantment ID**: `grapnel:toughness`
-- **Max Level**: 2
-- **Rarity**: Common
-- **Applicable Items**: Fishing rods
+###  抓钩附魔
+- **效果**：当鱼钩抛出的浮漂勾住方块、实体或墙面（需开启对应配置）后，再次右键收竿，玩家会被瞬间拉向浮漂的位置。
+- **拉拽机制**：拉拽力度受附魔等级、浮漂与玩家的距离影响，等级越高拉得越快，距离越远拉力越强。
+- **摔落缓冲**：使用抓钩后的第一次落地不会受到摔落伤害（可配置开关）。
+- **耐久消耗**：每次拉拽会消耗钓鱼竿的耐久（非创造模式下），消耗概率与附魔了“耐久”的等级有关，附魔等级越高越省耐久。
 
-**Effect**: Strengthens the fishing line, allowing you to cast farther and reducing the chance of the line breaking under tension. The effective casting distance is multiplied by a factor that increases with each level, providing a smoother and more reliable fishing experience.
+###  坚韧附魔
+- **效果**：强化鱼线强度，显著增加抛投的有效距离。附魔等级越高，鱼线可延伸的长度越长，鱼竿收回的判定距离也相应增加。
+- **实际表现**：相当于变相增加了浮漂的最大飞行距离，让你能勾到更远的方块或实体。
+- **与抓钩搭配**：坚韧等级越高，抓钩的有效范围就越大，组合使用效果更佳。
 
-The formula used for distance adjustment:
-- **Level 1**: ~1.2× multiplier (approximate)
-- **Level 2**: ~1.5× multiplier (approximate)
+###  抓墙功能（可配置）
+- **开启后**：浮漂击中方块时会像勾住实体一样卡在方块表面，不会掉落。
+- **应用场景**：你可以瞄准墙壁，让浮漂稳稳停住，随后收竿将自己拉过去。
+- **视觉效果**：浮漂会固定在击中点的坐标，并在墙上静止，直到你收竿或方块被破坏。
 
-(Exact values are derived from a carefully balanced mathematical function.)
+###  自定义配置
+所有核心机制都可通过配置文件或游戏内命令调整，满足不同玩家的需求：
 
----
+| 配置项 | 默认值 | 作用 |
+|--------|--------|------|
+| `grabWall` | `true` | 是否允许鱼钩勾住方块表面。关闭后，鱼钩只会勾住实体。 |
+| `grapnelCheck` | `false` | 是否只在鱼钩确实勾住方块或实体时才触发抓钩效果。关闭时，只要收回鱼竿（即使浮漂在空中）也会拉拽玩家，可用来快速移动。 |
+| `fallingBuffer` | `false` | 是否启用摔落缓冲。开启后，使用抓钩后的第一次落地不会扣血。 |
 
-### Core Gameplay Mechanics
+###  钓鱼竿耐久度提升
+原版钓鱼竿的耐久仅为 64，对于频繁使用的抓钩来说完全不够。本模组将钓鱼竿的基础耐久度提升至 **384**（和基岩版保持一致）。
 
-1. **Grappling Hook Functionality**: Grapnel enchantment pulls the player towards the bobber.
-2. **Vertical Mobility**: Allows players to swing through the air.
-3. **Fall Damage Protection**: By default, users are protected from fall damage when landing after using the grapnel enchantment (first landing only).
-4. **Extended Fishing Range**: Toughness enchantment increases the effective range of your fishing rod, making it easier to reach distant water spots or retrieve the bobber from farther away.
+###  游戏内命令
+管理员或拥有 OP 权限的玩家可使用 `/grapnel_settings` 命令实时调整配置（服务端）：
 
----
-
-### Command: `/grapnel_settings`
-
-Customize your grapnel experience with configurable settings:
-
-```mcfunction
-/grapnel_settings enableFallingBuffer <true/false>
+```
+/grapnel_settings enableFallingBuffer [true/false]   # 设置摔落缓冲开关
+/grapnel_settings grapnelCheck [true/false]          # 设置抓钩检测开关
+/grapnel_settings grabWall [true/false]              # 设置钓竿抓墙开关
 ```
 
-- **Default**: `false` (disabled)
-- **When enabled**: Players won't take fall damage on their first landing after using the grapnel
-- **When disabled**: No fall damage protection - players will take normal fall damage
+不带参数时，命令会显示当前配置值。
 
 ---
 
-## Installation
+## 附魔详情
 
-### Requirements
+| 附魔名称 | 最大等级 | 获取方式 | 效果简述 |
+|----------|----------|----------|----------|
+| 抓钩 (Grapnel) | I | 附魔台、铁砧、战利品 | 收竿时将玩家拉向浮漂 |
+| 坚韧 (Toughness) | II | 附魔台、铁砧、战利品 | 增加鱼线有效长度，提升抓钩范围 |
 
-- **Minecraft Version**: 1.21.1
-- **NeoForge Version**: 21.1.216 or compatible
-- **Java Version**: 21
-
-### Installation Steps
-
-1. Download and install NeoForge 21.1.216 for Minecraft 1.21.1.
-2. Download the latest version of the Grapnel mod.
-3. Place the mod JAR file in your Minecraft `mods` folder.
-4. Launch Minecraft with the NeoForge profile.
+- **兼容性**：两种附魔可共存于同一根钓鱼竿上，且无冲突附魔。
+- **附魔权重**：抓钩和坚韧的稀有度适中，在附魔台中出现的概率与其他常见附魔相当。
 
 ---
 
-## How to Obtain the Enchantments
+## 兼容性与依赖
 
-### In-Game Methods
-
-Both **Grapnel** and **Toughness** enchantments can be obtained through:
-
-1. **Loot Chests**: Enchanted fishing rods may appear in:
-    - Dungeon chests
-    - Mineshaft chests
-    - Stronghold libraries
-    - Shipwreck treasure chests
-    - End city chests
-
-2. **Villager Trading**: Librarian villagers may offer enchanted fishing rods (if their trades include fishing rods).
-
-3. **Enchanting Table** (for Toughness only): Toughness can be obtained directly from an enchanting table at a moderate cost. Grapnel remains a treasure enchantment.
-
-### Data Pack Integration
-
-The mod is fully compatible with data packs. You can add either enchantment to loot tables or trading recipes using the IDs:
-- `grapnel:grapnel`
-- `grapnel:toughness`
+- **加载器**：NeoForge（版本在21.1.216及以上）
+- **游戏版本**：Minecraft 1.21.1
+- **依赖**：无强制依赖，直接放入 `mods` 文件夹即可使用。
+- **多人游戏**：服务端安装后，所有配置由服务端控制，客户端也需要安装才能进入。
 
 ---
 
-## Usage Instructions
+# Overview
 
-### Basic Usage (Grapnel)
-
-1. **Enchant a Fishing Rod** with the Grapnel enchantment.
-2. **Cast the Line**: Right-click to cast the fishing line.
-3. **Retrieve to Swing**: Right-click again – instead of just pulling in the line, you'll be pulled towards the bobber!
-
-### Advanced Techniques (Grapnel)
-
-- **Momentum Control**: Time your swings to chain movements together.
-- **Directional Control**: Look in the direction you want to swing while retrieving.
-- **Precision Landing**: Aim for specific blocks to land exactly where you want.
-
-### Fishing with Toughness
-
-1. **Enchant a Fishing Rod** with Toughness (level I or II).
-2. **Cast as usual**: You'll notice the bobber travels farther before settling.
-3. **Reel in**: The line is stronger, so you can fish from greater distances without the line snapping.
-
-### Safety Tips
-
-- The falling buffer is enabled by default, but can be disabled for more challenge.
-- Practice in safe environments before attempting risky maneuvers.
-- Be aware of your surroundings – you might swing into unexpected places!
+Turn your fishing rod into a grappling hook tool! This mod adds two new enchantments that completely change how you use the fishing rod—cross terrains, climb heights, and more. With configurable options, you can tailor the grappling hook experience to your playstyle.
 
 ---
 
-## Configuration
+## Key Features
 
-### Command Details
+### 🎣 Grapnel Enchantment
+- **Effect**: After the bobber hooks onto a block, entity, or wall (if the corresponding config is enabled), right‑clicking again reels in and instantly pulls the player toward the bobber.
+- **Pull Mechanics**: The pulling force depends on the enchantment level and the distance between the bobber and the player. Higher levels pull faster, and greater distances increase the force.
+- **Fall Buffer**: The first landing after using the Grapnel does not cause fall damage (configurable).
+- **Durability Consumption**: Each pull consumes durability of the fishing rod (except in Creative mode). The chance of consumption is influenced by the Unbreaking enchantment level—higher levels save more durability.
 
-| Setting               | Default | Description                                                            |
-|-----------------------|---------|------------------------------------------------------------------------|
-| `enableFallingBuffer` | `true`  | Protects players from fall damage on first landing after using grapnel |
+### 💪 Toughness Enchantment
+- **Effect**: Strengthens the fishing line, significantly increasing the effective casting distance. The higher the enchantment level, the farther the line can extend and the greater the distance at which the rod can be retrieved.
+- **In Practice**: Effectively increases the maximum flight distance of the bobber, allowing you to hook blocks or entities farther away.
+- **Synergy with Grapnel**: Higher Toughness levels expand the Grapnel’s effective range—using them together yields the best results.
 
-### Permission Levels
+### 🧱 Grab Wall (Configurable)
+- **When Enabled**: The bobber will stick to a block surface when it hits one, just like hooking an entity, without falling off.
+- **Usage Scenarios**: Aim at walls to have the bobber firmly attach, then reel in to pull yourself over.
+- **Visual Effect**: The bobber stays fixed at the impact point, motionless on the wall until you reel in or the block is destroyed.
 
-- **Single Player**: All players can use the command.
-- **Multiplayer**: Requires OP level 2 or higher to modify settings.
+### ⚙️ Customizable Configuration
+All core mechanics can be adjusted via the config file or in‑game commands to suit different playstyles:
 
----
+| Config Option   | Default | Description |
+|-----------------|---------|-------------|
+| `grabWall`      | `true`  | Whether the fishing hook can stick to block surfaces. If disabled, the hook will only attach to entities. |
+| `grapnelCheck`  | `false` | Whether the Grapnel effect triggers only when the hook is actually stuck in a block or entity. When disabled, reeling in (even with the bobber in mid‑air) will pull the player, allowing for quick movement. |
+| `fallingBuffer` | `false` | Whether to enable the fall buffer. If enabled, the first landing after using a Grapnel rod does not cause fall damage. |
 
-## Compatibility
+### 📦 Fishing Rod Durability Buff
+The vanilla fishing rod has only 64 durability, which is far too low for frequent Grapnel use. This mod increases the base durability of fishing rods to **384** (matching Bedrock Edition).
 
-### Supported Mods
+### 🎮 In‑Game Commands
+Admins or players with OP privileges can use the `/grapnel_settings` command to adjust configurations in real time (server side):
 
-- Compatible with most mods that don't heavily modify fishing rods or enchantment mechanics.
+```
+/grapnel_settings enableFallingBuffer [true/false]   # Toggle fall buffer
+/grapnel_settings grapnelCheck [true/false]          # Toggle grapnel detection
+/grapnel_settings grabWall [true/false]              # Toggle grab wall
+```
 
-### Known Issues
-
-- May conflict with mods that completely overhaul fishing mechanics.
-- Incompatible with mods that modify the same enchantment registry keys.
-
----
-
-## For Modpack Creators
-
-### Integration Guidelines
-
-- The mod uses standard NeoForge registration systems.
-- Custom loot table integration is supported for both enchantments.
-
-### Recommended Modpack Settings
-
-- Include in adventure or parkour-themed modpacks.
-- Pairs well with mods that add new dimensions or challenging terrain.
-- Consider disabling the falling buffer for hardcore packs.
-
----
-
-## Technical Details
-
-### Mod Information
-
-- **Mod ID**: `grapnel`
-- **Source Code**: [GitHub Repository](https://github.com/Skrepy0/Grapnel-Neoforge)
-- **License**: Apache License 2.0
-
-### Dependencies
-
-- **Required**: NeoForge 21.1.216
-- **Optional**: None
+Running the command without arguments displays the current values.
 
 ---
 
-## Support and Issues
+## Enchantment Details
 
-### Reporting Bugs
+| Enchantment Name | Max Level | How to Obtain          | Effect Summary                                      |
+|------------------|-----------|------------------------|-----------------------------------------------------|
+| Grapnel          | I         | Enchanting Table, Anvil, Loot | Reeling in pulls the player toward the bobber      |
+| Toughness        | II        | Enchanting Table, Anvil, Loot | Increases effective fishing line length, boosting Grapnel range |
 
-If you encounter any issues:
+- **Compatibility**: Both enchantments can coexist on the same fishing rod and have no conflicts with other enchantments.
+- **Enchantment Weight**: Grapnel and Toughness have a moderate rarity, appearing in the enchanting table with a frequency comparable to common enchantments.
 
-1. Check the [GitHub Issues page](https://github.com/Skrepy0/Grapnel-Neoforge/issues)
-2. Include your Minecraft version, NeoForge version, and mod version.
-3. Describe what happened and steps to reproduce.
+---
 
-### Feature Requests
+## Compatibility & Dependencies
 
-Have ideas for improving the mod? Submit feature requests on the GitHub repository!
+- **Loader**: NeoForge (version 21.1.216 or higher)
+- **Game Version**: Minecraft 1.21.1
+- **Dependencies**: None—just drop the mod into the `mods` folder.
+- **Multiplayer**: Once installed on the server, all configurations are controlled by the server. The client also needs the mod installed to join.
 
 ---
 
@@ -209,4 +145,3 @@ Have ideas for improving the mod? Submit feature requests on the GitHub reposito
 - **Special Thanks**:
     - [Mafuyu33](https://github.com/Mafuyu33)
     - [Mahiru](https://github.com/Mahirukksk)
-

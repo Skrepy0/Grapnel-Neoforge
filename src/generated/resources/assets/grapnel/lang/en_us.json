@@ -8,7 +8,7 @@
   "enchantment.grapnel.grapnel.desc": "After using a fishing rod enchanted with §6[Grapnel]§r, reeling in pulls the player towards the bobber.",
   "enchantment.grapnel.toughness": "Toughness",
   "enchantment.grapnel.toughness.desc": "Increases fishing line strength, allowing you to cast farther and reducing the chance of the line breaking.",
-  "grapnel.configuration.fallingBuffer": "§aFall Buffer§r",
+  "grapnel.configuration.fallingBuffer": "Fall Buffer§r",
   "grapnel.configuration.fallingBuffer.tooltip": "When enabled, the player takes no fall damage on the first landing after using a fishing rod enchanted with §6[Grapnel]§r.",
   "grapnel.configuration.grabWall": "Grab Wall",
   "grapnel.configuration.grabWall.tooltip": "When enabled, the fishing rod can hook onto walls.",
