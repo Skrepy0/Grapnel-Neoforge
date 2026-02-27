@@ -1,6 +1,7 @@
 package com.grapnel.mixin;
 
 import com.grapnel.Config;
+import com.grapnel.data.DataHelper;
 import com.grapnel.data.FishingHookData;
 import com.grapnel.enchantments.ModEnchantHelper;
 import com.grapnel.enchantments.ModEnchantments;
@@ -49,14 +50,13 @@ public class PlayerMixin {
         FishingHookData.LockedInfo lockedInfo = player.getData(FishingHookData.LOCKED_INFO.get());
 
         // 检查数据是否有效
-        if (lockedInfo.isIsLocked() && player.fishing != null) {
+        if (lockedInfo.locked() && player.fishing != null) {
             if (!checkFishingRod(player))return;
             // 递增锁定tick
-            lockedInfo.setLockTick(lockedInfo.getLockTick() + 1);
-
+            DataHelper.setLockTick(player,lockedInfo.lockTick() + 1);
             // 获取半径和锚点
-            double radius = lockedInfo.getLockRadius();
-            Vec3 center = lockedInfo.getHookPos();
+            double radius = lockedInfo.lockRadius();
+            Vec3 center = lockedInfo.hookPos();
 
             // 1. 获取玩家当前位置和速度
             Vec3 playerPos = player.position();
@@ -109,7 +109,7 @@ public class PlayerMixin {
                     // --- 动能补偿逻辑 ---
 
                     // 初始保护期内不进行能量补偿
-                    if (lockedInfo.getLockTick() > LOCK_PROTECTION_TICKS) {
+                    if (lockedInfo.lockTick() > LOCK_PROTECTION_TICKS) {
                         // 1. 计算当前切向速度的大小
                         double currentSpeed = tangentialVelocity.length();
 

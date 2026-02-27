@@ -4,6 +4,7 @@ import com.grapnel.Config;
 import com.grapnel.Grapnel;
 import com.mojang.brigadier.arguments.BoolArgumentType;
 import com.mojang.brigadier.context.CommandContext;
+import com.mojang.brigadier.exceptions.CommandSyntaxException;
 import net.minecraft.commands.CommandSourceStack;
 import net.minecraft.commands.Commands;
 import net.minecraft.network.chat.Component;
@@ -39,7 +40,7 @@ public class ConfigCommand {
 
     public static void register(RegisterCommandsEvent event) {
         event.getDispatcher().register(Commands.literal("grapnel_settings")
-                .requires(source -> source.hasPermission(2))
+                .requires(Commands.hasPermission(Commands.LEVEL_GAMEMASTERS))
                 .then(Commands.literal("enableFallingBuffer")
                         .executes(context -> {
                             showValue(context, "enableFallingBuffer", String.valueOf(Config.getFailingBuffer()));

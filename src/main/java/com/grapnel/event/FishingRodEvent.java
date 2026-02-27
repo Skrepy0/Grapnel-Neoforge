@@ -2,6 +2,7 @@ package com.grapnel.event;
 
 import com.grapnel.Config;
 import com.grapnel.Grapnel;
+import com.grapnel.data.DataHelper;
 import com.grapnel.data.FishingHookData;
 import com.grapnel.enchantments.ModEnchantHelper;
 import com.grapnel.enchantments.ModEnchantments;
@@ -50,13 +51,13 @@ public class FishingRodEvent {
             boolean shouldTrigger = !Config.getGrapnelCheck() ||
                     player.fishing.getHookedIn() != null ||
                     player.fishing.onGround() ||
-                    player.fishing.getData(FishingHookData.IS_HOOKED.get()).isHooked();
+                    player.fishing.getData(FishingHookData.IS_HOOKED.get()).hooked();
 
             if (shouldTrigger) {
                 onFishingRodRetrieve(player, level, hand);
             }
         } else {
-            player.getData(FishingHookData.LOCKED_INFO.get()).setIsLocked(false);
+            DataHelper.setIsLocked(player,false);
         }
     }
 

@@ -1,6 +1,7 @@
 package com.grapnel.mixin;
 
 import com.grapnel.Config;
+import com.grapnel.data.DataHelper;
 import com.grapnel.data.FishingHookData;
 import com.grapnel.enchantments.ModEnchantHelper;
 import com.grapnel.enchantments.ModEnchantments;
@@ -33,7 +34,7 @@ public class FishingHookMixin {
     private double shouldStopFishing(FishingHook hook, net.minecraft.world.entity.Entity entity) {
         double distance = hook.distanceToSqr(entity);
         if (entity instanceof Player player)
-            return distance * grapnel$getRebate(player.getData(FishingHookData.TOUGHNESS_LEVEL.get()).getToughnessLevel());
+            return distance * grapnel$getRebate(player.getData(FishingHookData.TOUGHNESS_LEVEL.get()).level());
         return distance;
     }
 
@@ -55,14 +56,14 @@ public class FishingHookMixin {
 
         // 记录勾住的位置
         this.grapnel$isHooked = true;
-        hook.getData(FishingHookData.IS_HOOKED.get()).setHooked(true);
+        DataHelper.setHooked(hook,true);
         this.grapnel$hookedPos = BlockPos.containing(hitResult.getLocation());
         // 新增：设置持续锁定
         Player player = hook.getPlayerOwner();
         if (player != null) {
             double lockRadius = player.distanceTo(hook);
             // 使用不可变对象或记录类
-            player.getData(FishingHookData.LOCKED_INFO).setInfo(true, hook.position(), lockRadius);
+            player.setData(FishingHookData.LOCKED_INFO, new FishingHookData.LockedInfo(true, hook.position(), lockRadius,0));
         }
     }
 
@@ -77,7 +78,7 @@ public class FishingHookMixin {
             if (state.isAir()) {
                 // 方块被破坏，脱离勾住状态
                 this.grapnel$isHooked = false;
-                hook.getData(FishingHookData.IS_HOOKED.get()).setHooked(false);
+                DataHelper.setHooked(hook,false);
                 this.grapnel$hookedPos = null;
                 // 让鱼钩恢复原版行为，不再干预
             } else {
