@@ -24,5 +24,7 @@ public class ModItemTagsProvider extends ItemTagsProvider {
                 .add(Items.FISHING_ROD.asItem());
         tag(ModItemTags.TOUGHNESS_AVAILABLE)
                 .add(Items.FISHING_ROD.asItem());
+        tag(ModItemTags.SWING_AVAILABLE)
+                .add(Items.FISHING_ROD.asItem());
     }
 }

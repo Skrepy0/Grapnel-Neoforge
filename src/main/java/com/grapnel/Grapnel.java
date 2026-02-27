@@ -40,9 +40,6 @@ public class Grapnel {
         // Do not add this line if there are no @SubscribeEvent-annotated functions in this class, like onServerStarting() below.
         NeoForge.EVENT_BUS.register(this);
         NeoForge.EVENT_BUS.addListener(ConfigCommand::register);
-        NeoForge.EVENT_BUS.addListener(FishingRodEvent::onRightClickItem);
-        NeoForge.EVENT_BUS.addListener(FishingRodEvent::onPlayerDisconnect);
-        NeoForge.EVENT_BUS.addListener(FishingRodEvent::onServerTick);
         // Register the item to a creative tab
         modEventBus.addListener(this::addCreative);
     }

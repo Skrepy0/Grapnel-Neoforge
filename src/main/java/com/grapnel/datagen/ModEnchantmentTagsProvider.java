@@ -22,7 +22,8 @@ public class ModEnchantmentTagsProvider extends EnchantmentTagsProvider {
                 .addOptional(ResourceLocation.fromNamespaceAndPath(Grapnel.MOD_ID, "grapnel"));
         tag(EnchantmentTags.ON_RANDOM_LOOT)
                 .addOptional(ResourceLocation.fromNamespaceAndPath(Grapnel.MOD_ID, "grapnel"))
-                .addOptional(ResourceLocation.fromNamespaceAndPath(Grapnel.MOD_ID, "toughness"));
+                .addOptional(ResourceLocation.fromNamespaceAndPath(Grapnel.MOD_ID, "toughness"))
+                .addOptional(ResourceLocation.fromNamespaceAndPath(Grapnel.MOD_ID, "swing"));
         tag(EnchantmentTags.ON_TRADED_EQUIPMENT)
                 .addOptional(ResourceLocation.fromNamespaceAndPath(Grapnel.MOD_ID, "grapnel"))
                 .addOptional(ResourceLocation.fromNamespaceAndPath(Grapnel.MOD_ID, "toughness"));
@@ -30,10 +31,14 @@ public class ModEnchantmentTagsProvider extends EnchantmentTagsProvider {
                 .addOptional(ResourceLocation.fromNamespaceAndPath(Grapnel.MOD_ID, "grapnel"));
         tag(EnchantmentTags.TRADEABLE)
                 .addOptional(ResourceLocation.fromNamespaceAndPath(Grapnel.MOD_ID, "grapnel"))
-                .addOptional(ResourceLocation.fromNamespaceAndPath(Grapnel.MOD_ID, "toughness"));
+                .addOptional(ResourceLocation.fromNamespaceAndPath(Grapnel.MOD_ID, "toughness"))
+                .addOptional(ResourceLocation.fromNamespaceAndPath(Grapnel.MOD_ID, "swing"));
+
         tag(EnchantmentTags.TREASURE)
                 .addOptional(ResourceLocation.fromNamespaceAndPath(Grapnel.MOD_ID, "grapnel"))
-                .addOptional(ResourceLocation.fromNamespaceAndPath(Grapnel.MOD_ID, "toughness"));
+                .addOptional(ResourceLocation.fromNamespaceAndPath(Grapnel.MOD_ID, "toughness"))
+                .addOptional(ResourceLocation.fromNamespaceAndPath(Grapnel.MOD_ID, "swing"));
+
 
         tag(EnchantmentTags.TRADES_PLAINS_COMMON)
                 .addOptional(ResourceLocation.fromNamespaceAndPath(Grapnel.MOD_ID, "grapnel"))

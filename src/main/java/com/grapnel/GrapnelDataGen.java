@@ -12,7 +12,7 @@ import net.neoforged.neoforge.data.event.GatherDataEvent;
 
 import java.util.concurrent.CompletableFuture;
 
-@EventBusSubscriber(modid = Grapnel.MOD_ID)
+@EventBusSubscriber(modid = Grapnel.MOD_ID, bus = EventBusSubscriber.Bus.MOD)
 
 public class GrapnelDataGen {
     @SubscribeEvent

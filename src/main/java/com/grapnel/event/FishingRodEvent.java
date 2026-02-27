@@ -14,6 +14,7 @@ import net.minecraft.world.item.enchantment.Enchantments;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.Vec3;
 import net.neoforged.bus.api.SubscribeEvent;
+import net.neoforged.fml.common.EventBusSubscriber;
 import net.neoforged.neoforge.event.entity.player.PlayerEvent;
 import net.neoforged.neoforge.event.entity.player.PlayerInteractEvent;
 import net.neoforged.neoforge.event.tick.ServerTickEvent;
@@ -23,7 +24,7 @@ import java.util.Iterator;
 import java.util.Map;
 import java.util.UUID;
 import java.util.concurrent.ThreadLocalRandom;
-
+@EventBusSubscriber(modid = Grapnel.MOD_ID, bus = EventBusSubscriber.Bus.GAME)
 public class FishingRodEvent {
     private static class ProtectionData {
         boolean active;
@@ -44,7 +45,6 @@ public class FishingRodEvent {
         Level level = player.level();
         ItemStack stack = event.getItemStack();
         InteractionHand hand = event.getHand();
-
         if (stack.getItem() instanceof FishingRodItem && player.fishing != null) {
             // 检查是否满足触发条件
             boolean shouldTrigger = !Config.getGrapnelCheck() ||
@@ -55,6 +55,8 @@ public class FishingRodEvent {
             if (shouldTrigger) {
                 onFishingRodRetrieve(player, level, hand);
             }
+        } else {
+            player.getData(FishingHookData.LOCKED_INFO.get()).setIsLocked(false);
         }
     }
 
