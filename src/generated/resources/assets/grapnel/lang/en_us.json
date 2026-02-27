@@ -6,12 +6,20 @@
   "command.grapnel.show_value": "Config [%s] is currently set to: %s",
   "enchantment.grapnel.grapnel": "Grapnel",
   "enchantment.grapnel.grapnel.desc": "After using a fishing rod enchanted with §6[Grapnel]§r, reeling in pulls the player towards the bobber.",
+  "enchantment.grapnel.swing": "Swing",
+  "enchantment.grapnel.swing.desc": "Hook onto walls with your fishing rod to swing through the air.",
   "enchantment.grapnel.toughness": "Toughness",
   "enchantment.grapnel.toughness.desc": "Increases fishing line strength, allowing you to cast farther and reducing the chance of the line breaking.",
+  "grapnel.configuration.energyCompensationFactor": "Energy Compensation Factor (§dSwing§r Enchant)",
+  "grapnel.configuration.energyCompensationFactor.tooltip": "Compensates for speed loss caused by air resistance. Higher values allow you to swing higher. Set to §d1.0§r for zero air resistance.",
   "grapnel.configuration.fallingBuffer": "Fall Buffer§r",
   "grapnel.configuration.fallingBuffer.tooltip": "When enabled, the player takes no fall damage on the first landing after using a fishing rod enchanted with §6[Grapnel]§r.",
   "grapnel.configuration.grabWall": "Grab Wall",
   "grapnel.configuration.grabWall.tooltip": "When enabled, the fishing rod can hook onto walls.",
   "grapnel.configuration.grapnelCheck": "Grapnel Detection",
-  "grapnel.configuration.grapnelCheck.tooltip": "When enabled, the §6[Grapnel]§r enchantment only triggers when the hook is stuck in a block or entity."
+  "grapnel.configuration.grapnelCheck.tooltip": "When enabled, the §6[Grapnel]§r enchantment only triggers when the hook is stuck in a block or entity.",
+  "grapnel.configuration.lockProtectionTicks": "Lock Protection Ticks (§dSwing§r Enchant)",
+  "grapnel.configuration.lockProtectionTicks.tooltip": "Buffer time after locking where physics calculations are skipped to prevent sudden velocity changes. Prevents the player from being instantly snapped back or stuck right after launching.",
+  "grapnel.configuration.positionClampThreshold": "Position Clamp Threshold (§dSwing§r Enchant)",
+  "grapnel.configuration.positionClampThreshold.tooltip": "When swinging too fast and exceeding the rope length, the system forces the player back. This value determines how many blocks beyond the rope length you are allowed to go before being pulled back. Smaller values make the rope feel 'stiffer'; larger values make it feel 'looser'."
 }

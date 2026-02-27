@@ -5,6 +5,7 @@ import com.grapnel.Grapnel;
 import com.grapnel.data.FishingHookData;
 import com.grapnel.enchantments.ModEnchantHelper;
 import com.grapnel.enchantments.ModEnchantments;
+import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.entity.projectile.FishingHook;
@@ -44,7 +45,6 @@ public class FishingRodEvent {
         Level level = player.level();
         ItemStack stack = event.getItemStack();
         InteractionHand hand = event.getHand();
-
         if (stack.getItem() instanceof FishingRodItem && player.fishing != null) {
             // 检查是否满足触发条件
             boolean shouldTrigger = !Config.getGrapnelCheck() ||
@@ -55,6 +55,8 @@ public class FishingRodEvent {
             if (shouldTrigger) {
                 onFishingRodRetrieve(player, level, hand);
             }
+        } else {
+            player.getData(FishingHookData.LOCKED_INFO.get()).setIsLocked(false);
         }
     }
 

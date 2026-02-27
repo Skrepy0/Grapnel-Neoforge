@@ -2,6 +2,8 @@ package com.grapnel.mixin;
 
 import com.grapnel.Config;
 import com.grapnel.data.FishingHookData;
+import com.grapnel.enchantments.ModEnchantHelper;
+import com.grapnel.enchantments.ModEnchantments;
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.entity.projectile.FishingHook;
@@ -15,6 +17,8 @@ import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.Redirect;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
+
+import java.util.Objects;
 
 @Mixin(FishingHook.class)
 public class FishingHookMixin {
@@ -53,6 +57,13 @@ public class FishingHookMixin {
         this.grapnel$isHooked = true;
         hook.getData(FishingHookData.IS_HOOKED.get()).setHooked(true);
         this.grapnel$hookedPos = BlockPos.containing(hitResult.getLocation());
+        // 新增：设置持续锁定
+        Player player = hook.getPlayerOwner();
+        if (player != null) {
+            double lockRadius = player.distanceTo(hook);
+            // 使用不可变对象或记录类
+            player.getData(FishingHookData.LOCKED_INFO).setInfo(true, hook.position(), lockRadius);
+        }
     }
 
     // 在 tick 中只跳过移动部分，但保留其他逻辑

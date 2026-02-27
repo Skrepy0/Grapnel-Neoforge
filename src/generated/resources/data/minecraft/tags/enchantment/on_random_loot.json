@@ -7,6 +7,10 @@
     {
       "id": "grapnel:toughness",
       "required": false
+    },
+    {
+      "id": "grapnel:swing",
+      "required": false
     }
   ]
 }
