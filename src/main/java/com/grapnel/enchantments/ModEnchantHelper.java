@@ -2,7 +2,6 @@ package com.grapnel.enchantments;
 
 import net.minecraft.client.Minecraft;
 import net.minecraft.core.Holder;
-import net.minecraft.core.Registry;
 import net.minecraft.core.RegistryAccess;
 import net.minecraft.core.component.DataComponents;
 import net.minecraft.core.registries.Registries;
@@ -21,8 +20,8 @@ public class ModEnchantHelper {
         // 通过 ResourceKey 获取 Holder<Enchantment>
         if (world != null) {
             Holder<Enchantment> enchantmentHolder = world.registryAccess()
-                    .registryOrThrow(Registries.ENCHANTMENT)
-                    .getHolder(enchantmentKey)
+                    .lookupOrThrow(Registries.ENCHANTMENT)
+                    .get(enchantmentKey)
                     .orElse(null);
 
             // 如果有附魔组件和 Holder，返回等级
@@ -37,8 +36,8 @@ public class ModEnchantHelper {
     public static Holder<Enchantment> getHolder(ResourceKey<Enchantment> enchantmentKey) {
         Level world = Minecraft.getInstance().level;
         return world.registryAccess()
-                .registryOrThrow(Registries.ENCHANTMENT)
-                .getHolder(enchantmentKey)
+                .lookupOrThrow(Registries.ENCHANTMENT)
+                .get(enchantmentKey)
                 .orElse(null);
     }
 
@@ -67,12 +66,15 @@ public class ModEnchantHelper {
     }
 
     public static String getDescriptionId(Enchantment enchantment, RegistryAccess registryAccess) {
-        Registry<Enchantment> registry = registryAccess.registryOrThrow(Registries.ENCHANTMENT);
-        ResourceLocation id = registry.getKey(enchantment);
+        // 使用 lookupOrThrow 获取 HolderLookup
+        var lookup = registryAccess.lookupOrThrow(Registries.ENCHANTMENT);
+
+        // 从 HolderLookup 获取 ResourceLocation
+        ResourceLocation id = lookup.getKey(enchantment);
+
         if (id == null) {
             return "enchantment.unknown";
         }
         return "enchantment." + id.getNamespace() + "." + id.getPath();
     }
 }
-

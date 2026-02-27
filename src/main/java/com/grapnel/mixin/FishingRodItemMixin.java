@@ -4,7 +4,7 @@ import com.grapnel.data.FishingHookData;
 import com.grapnel.enchantments.ModEnchantHelper;
 import com.grapnel.enchantments.ModEnchantments;
 import net.minecraft.world.InteractionHand;
-import net.minecraft.world.InteractionResultHolder;
+import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.FishingRodItem;
 import net.minecraft.world.item.ItemStack;
@@ -17,7 +17,8 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 @Mixin(FishingRodItem.class)
 public class FishingRodItemMixin {
     @Inject(method = "use", at = @At("HEAD"))
-    private void use(Level level, Player player, InteractionHand hand, CallbackInfoReturnable<InteractionResultHolder<ItemStack>> cir) {
+    private void use(Level level, Player player, InteractionHand hand, CallbackInfoReturnable<InteractionResult> cir){
         player.getData(FishingHookData.TOUGHNESS_LEVEL.get()).setToughnessLevel(ModEnchantHelper.getEnchantmentLevel(player.getItemInHand(hand),level, ModEnchantments.TOUGHNESS));
+
     }
 }
